@@ -49,23 +49,6 @@ function tick(timeSinceStart) {
   ui.render();
 }
 
-function elementPos(element) {
-  var x = 0, y = 0;
-  while(element.offsetParent) {
-    x += element.offsetLeft;
-    y += element.offsetTop;
-    element = element.offsetParent;
-  }
-  return { x: x, y: y };
-}
-
-function eventPos(event) {
-  return {
-    x: event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft,
-    y: event.clientY + document.body.scrollTop + document.documentElement.scrollTop
-  };
-}
-
 window.onload = function() {
   gl = null;
   error = document.getElementById('error');
@@ -83,7 +66,7 @@ window.onload = function() {
     }
 
     material = parseInt(document.getElementById('material').value, 10);
-    environment = parseInt(document.getElementById('environment').value, 10);
+    //environment = parseInt(document.getElementById('environment').value, 10);
     ui = new UI();
     ui.setObjects(makeSphereColumn());
     var start = new Date();

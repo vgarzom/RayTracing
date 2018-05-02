@@ -128,9 +128,11 @@ function UI() {
   };
   
   UI.prototype.updateEnvironment = function() {
-    var newEnvironment = parseInt(document.getElementById('environment').value, 10);
-    if(environment != newEnvironment) {
-      environment = newEnvironment;
+    //var newEnvironment = parseInt(document.getElementById('environment').value, 10);
+    if(wall1color != wall1colorTemp || wall2color != wall2colorTemp) {
+        wall1color = wall1colorTemp;
+        wall2color = wall2colorTemp;
+        updateColorCornellBox();
       this.renderer.setObjects(this.objects);
     }
   };

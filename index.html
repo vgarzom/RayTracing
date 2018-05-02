@@ -5,6 +5,7 @@
 
     <script type="text/javascript" src="libs/sylvester.js"></script>
     <script type="text/javascript" src="libs/glUtils.js"></script>
+    <script type="text/javascript" src="libs/jscolor.js"></script>
     <script type="text/javascript" src="globals.js"></script>
     <script type="text/javascript" src="shader-strings.js"></script>
     <script type="text/javascript" src="util.js"></script>
@@ -53,10 +54,9 @@
         <br>
   
         <b>Environment:</b>
-        <select id="environment">
-          <option value="0" selected>Cornell Box - Yellow and Blue</option>
-          <option value="1">Cornell Box - Red and Green</option>
-        </select>
+<br/>
+        Color pared 1: <input class="jscolor {onFineChange:'updateWall1Color(this)'}"  value="FF9E0D"><br/>
+        Color pared 2: <input class="jscolor {onFineChange:'updateWall2Color(this)'}"  value="0273AB">
       </p>
   
       <p>

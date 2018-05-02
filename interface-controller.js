@@ -68,3 +68,20 @@ document.onkeydown = function(event) {
     }
   }
 };
+
+function elementPos(element) {
+    var x = 0, y = 0;
+    while(element.offsetParent) {
+      x += element.offsetLeft;
+      y += element.offsetTop;
+      element = element.offsetParent;
+    }
+    return { x: x, y: y };
+  }
+  
+  function eventPos(event) {
+    return {
+      x: event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft,
+      y: event.clientY + document.body.scrollTop + document.documentElement.scrollTop
+    };
+  }

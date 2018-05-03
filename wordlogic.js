@@ -69,7 +69,7 @@ function makeStacks() {
     objects.push(new Sphere(Vector.create([0, 0.75, 0]), 0.25, nextObjectId++));
     objects.push(new Sphere(Vector.create([0, 0.25, 0]), 0.25, nextObjectId++));
     objects.push(new Sphere(Vector.create([0, -0.25, 0]), 0.25, nextObjectId++));
-    objects.push(new Sphere(Vector.create([0, -0.75, 0]), 0.25, nextObjectId++));
+    objects.push(new Cylinder(Vector.create([0, -0.75, 0]), 0.25, 0.5, nextObjectId++));
     return objects;
   }
   

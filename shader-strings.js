@@ -76,7 +76,7 @@ var intersectCubeSource =
     '   vec3 t1 = min(tMin, tMax);' +
     '   vec3 t2 = max(tMin, tMax);' +
     '   float tNear = max(max(t1.x, t1.y), t1.z);' +
-    '   float tFar = min(min(t2.x, t2.y), t2.z);' +
+    '   float tFar = min(min(t2.x, t2.y), t2.z);' + 
     '   return vec2(tNear, tFar);' +
     ' }';
 
@@ -109,11 +109,39 @@ var intersectSphereSource =
     '   return ' + infinity + ';' +
     ' }';
 
+    var intersectCylinderSource =
+    ' float intersectCylinder(vec3 origin, vec3 ray, vec3 cylCenter, float cylRadius, float cylHeight) {' +
+    '   vec3 toCyl = origin - cylCenter;' +
+    '   float a = ray.x*ray.x + ray.z*ray.z;' +
+    '   float b = 2.0 * (ray.x*toCyl.x + ray.z*toCyl.z);' +
+    '   float c = toCyl.x*toCyl.x + toCyl.z*toCyl.z - cylRadius*cylRadius;' +
+    '   float discriminant = b*b - 4.0*a*c;' +
+    '   float ymin = (- cylHeight/2.0);' +
+    '   float ymax = ( cylHeight/2.0);' +
+    '   if(discriminant > 0.0) {' +
+    '     float t = (-b - sqrt(discriminant)) / (2.0 * a);' +
+    '     if (t > 0.0) { '+
+    '        if((toCyl.y + t*ray.y) > ymin && (toCyl.y + t*ray.y) < ymax) return t;' +
+    '        else if ((toCyl.y + t*ray.y) == ymin) return 1.0; '+
+    '        else if ((toCyl.y + t*ray.y) == ymax) return 1.0; '+
+    '     }'+
+    '   }' +
+    '   return ' + infinity + ';' +
+    ' }';
+
 // given that hit is a point on the sphere, what is the surface normal?
 var normalForSphereSource =
     ' vec3 normalForSphere(vec3 hit, vec3 sphereCenter, float sphereRadius) {' +
     '   return (hit - sphereCenter) / sphereRadius;' +
     ' }';
+
+var normalForCylinderSource =
+    ' vec3 normalForCylinder(vec3 hit, vec3 cylCenter, float cylRadius, float cylHeight) {' +
+    '   if(hit.y < cylCenter.y - cylHeight/2.0  + ' + epsilon + ') return vec3(0.0, -1.0, 0.0);' +
+    '   else if(hit.y > cylCenter.y + cylHeight/2.0 - ' + epsilon + ') return vec3(0.0, 1.0, 0.0);' +
+    '   else return (hit - cylCenter) / cylRadius;' +
+    ' }';
+
 
 // use the fragment position for randomness
 var randomSource =
@@ -181,14 +209,14 @@ var newGlossyRay =
 
 var colorCornellBox = '';
 
-function updateColorCornellBox(){
+function updateColorCornellBox() {
     console.log("updating color");
     colorCornellBox = ' if(hit.x < -0.9999) surfaceColor = vec3(' + wall1color[0] + ',' + wall1color[1] + ',' + wall1color[2] + ');' +
-    ' else if(hit.x > 0.9999) surfaceColor = vec3(' + wall2color[0] + ',' + wall2color[1] + ',' + wall2color[2] + ');';
+        ' else if(hit.x > 0.9999) surfaceColor = vec3(' + wall2color[0] + ',' + wall2color[1] + ',' + wall2color[2] + ');';
 }
 
 updateColorCornellBox();
-    
+
 function makeShadow(objects) {
     return '' +
         ' float shadow(vec3 origin, vec3 ray) {' +
@@ -269,7 +297,9 @@ function makeTracerFragmentSource(objects) {
         intersectCubeSource +
         normalForCubeSource +
         intersectSphereSource +
+        intersectCylinderSource +
         normalForSphereSource +
+        normalForCylinderSource +
         randomSource +
         cosineWeightedDirectionSource +
         uniformlyRandomDirectionSource +

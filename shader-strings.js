@@ -122,8 +122,20 @@ var intersectSphereSource =
     '     float t = (-b - sqrt(discriminant)) / (2.0 * a);' +
     '     if (t > 0.0) { '+
     '        if((toCyl.y + t*ray.y) > ymin && (toCyl.y + t*ray.y) < ymax) return t;' +
-    '        else if ((toCyl.y + t*ray.y) == ymin) return 1.0; '+
-    '        else if ((toCyl.y + t*ray.y) == ymax) return 1.0; '+
+    '        else if ((toCyl.y + t*ray.y) >= ymax) {'+
+    '           float dist = (ymax - toCyl.y)/ray.y;'+
+    '           float px = toCyl.x + dist*ray.x;'+
+    '           float py = toCyl.y + dist*ray.y;'+
+    '           float pz = toCyl.z + dist*ray.z;'+
+    '           if (px*px + pz*pz - cylRadius*cylRadius <= 0.0000001) return dist;'+
+    '        } '+
+    '        else if ((toCyl.y + t*ray.y) < ymin) {'+
+    '           float dist = (ymin - toCyl.y)/ray.y;'+
+    '           float px = toCyl.x + dist*ray.x;'+
+    '           float py = toCyl.y + dist*ray.y;'+
+    '           float pz = toCyl.z + dist*ray.z;'+
+    '           if (px*px + pz*pz - cylRadius*cylRadius <= 0.0000001) return dist;'+
+    '        } '+
     '     }'+
     '   }' +
     '   return ' + infinity + ';' +
